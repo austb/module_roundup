@@ -1,0 +1,173 @@
+**puppetlabs-catalog_preview-2.2.0**
+
+Module providing catalog preview and migration features
+
+##2016-08-02 - Release 2.2.0
+### Summary
+
+This release includes new features as well as bug fixes.
+
+The overview data model now contains more information. It used to only contain the top 10 nodes based on an issue count.
+Now, the overview data model contains information about all nodes the overview is based on and with more details per node
+in the form of number of errors, warning, and catalog differences. This information is now used to better order the output
+as well as being easier to consume by custom post-processing and presentation logic.
+
+Attempting to use a node for which there was no available fact-set caused an error that did not indicate what the real problem was.
+Now, instead, deactivated or non existing nodes will be skipped. This supports the use case when a compilation is requested
+where the list of nodes to compile for was generated from a list of certificates (which may contain deactivated nodes).
+
+There were errors in the calculation and presentation of issue counts where the same problem could be counted multiple times.
+This is now corrected.
+
+Catalog preview could not compute the difference between resources that used an Integer as resource title. This is now fixed.
+
+
+
+**puppetlabs-apk-0.2.0**
+
+Manage packages on Alpine Linux using the APK package manager
+
+
+
+**puppetlabs-ciscopuppet-1.3.2**
+
+Cisco Puppet providers and types for NX-OS devices
+
+## [1.3.2] - 2016-07-26
+### Fixed:
+- Remove `autorequire` references in cisco types.
+  - Fixes incompatibility between cisco resources and latest puppet agent rpm.
+- Fix `undefined method 'previous'` bug in `cisco_command_config` provider.
+
+
+
+**puppetlabs-postgresql-4.8.0**
+
+Offers support for basic management of PostgreSQL databases.
+
+## Supported Release 4.8.0
+### Summary
+This release primarily fixes an issue with `postgresql_conf` values of ipaddresses being considered floats and not getting quoted.
+
+#### Features
+- Add `default_connect_settings` parameter to `postgresql::server`
+- Running under strict variables is now supported
+- Add timestamps into logs by default
+
+#### Bugfixes
+- Obscure password in postgresql\_psql type
+- Fix ip address quoting in postgresql\_conf type
+- Fix handling of systemd service on Ubuntu
+- Mark log_min_duration_statement setting as requiring a service restart
+- Add fixes for Fedora 23, Fedora 24, FreeBSD, OpenBSD
+- Fix environment handling to avoid "Overriding environment setting" message
+- Work around PUP-6385, using empty arrays instead of undef when specifying resource relationships
+- README editorial pass
+- Reduce whitespace in templates
+- Update build/test infrastructure
+
+
+
+**puppetlabs-inventory-0.2.0**
+
+Provides a Puppet face for dumping an inventory of a node
+
+
+
+**puppetlabs-dummy_service-0.2.0**
+
+Provides a dummy service implementation for use in building containers
+
+
+
+**puppetlabs-inventory-0.1.1**
+
+Provides a Puppet face for dumping an inventory of a node
+
+
+
+**puppetlabs-dummy_service-0.1.0**
+
+Provides a dummy service implementation for use in building containers
+
+
+
+**puppetlabs-inventory-0.1.0**
+
+Provides a Puppet face for dumping an inventory of a node
+
+
+
+**puppetlabs-wordpress_app-0.1.0**
+
+Application module for managing wordpress.
+
+
+
+**puppetlabs-app_modeling-0.1.0**
+
+Tools for application modeling
+
+
+
+**puppetlabs-chocolatey-0.8.0**
+
+Chocolatey package provider for Puppet
+
+## 2016-07-13 Unsupported Release 0.8.0
+
+This brings the unsupported puppetlabs-chocolatey provider on par with the approved chocolatey-chocolatey at 1.2.6 and adds additional features.
+
+ * Includes community module releases up to 1.2.6 (changelog below).
+ * Manage features - `chocolateyfeature` - see [MODULES-3034](https://tickets.puppet.com/browse/MODULES-3034)
+ * Manage config settings - `chocolateyconfig` - see [MODULES-3035](https://tickets.puppet.com/browse/MODULES-3035)
+
+
+
+**puppetlabs-azure-1.0.3**
+
+Create and manage machines running on Microsoft Azure with Puppet
+
+## Supported Version 1.0.3
+### Summary
+This release updates the module for the 0.3.0 version of the azure gems and
+fixes a bug for Azure::Core
+
+### Fixed
+- Update to 0.3.0 version of azure\_mgmt\* gems
+- Fix Azure::Core require
+- Fix paging of REST when lots of VMs
+- Fix puppet resource failing validation
+- Fix docs mentioning incorrect quoting in azure.conf
+- Fix bundlered listen gem failing on older rubies
+- Fix lint warnings in examples/\*.pp
+- Add Debian 8 to metadata
+- Fix domain to be spec-specific
+
+
+
+**puppetlabs-powershell-2.0.2**
+
+Adds a new exec provider for executing PowerShell commands.
+
+##2016-07-12 - Supported Release 2.0.2
+###Summary
+
+Small release with bugs fixes and another speed improvement.
+
+###Features
+- Noticable speed increase by reducing the time start a PowerShell command ([MODULES-3406](https://tickets.puppetlabs.com/browse/MODULES-3406))
+
+###Bug Fixes
+- Fixed minor bugs in tests ([MODULES-3347](https://tickets.puppetlabs.com/browse/MODULES-3347))
+- Added tests for try/catch ([MODULES-2634](https://tickets.puppetlabs.com/browse/MODULES-2634))
+- Fixed bug with older ruby (1.8)
+
+
+
+**puppetlabs-nodejs-999.999.999**
+
+[Deprecated] Install Node.js package and npm package provider.
+
+
+

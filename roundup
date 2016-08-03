@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+require 'puppet_forge'
+require 'irb'
+
+collect_since = ARGV.shift
+output_file = ARGV.shift
+output_file ||= collect_since
+
+oldest_date = DateTime.parse collect_since
+
+PuppetForge.user_agent = "ModuleRoundup"
+
+@puppetlabs_releases = PuppetForge::Release.where(owner: 'puppetlabs', sort_by: 'release_date', limit: 100)
+
+recent = []
+
+@puppetlabs_releases.unpaginated.each do |item|
+  release_date = DateTime.parse item.created_at
+  break if release_date < oldest_date
+
+  recent << item
+end
+
+File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
+  recent.each do |r|
+    entry = "**#{r.slug}**\n\n"
+    entry += "#{r.metadata[:summary]}\n\n"
+
+    changelog_section = /(##[^\n]*#{r.version}.*?)##[^\n]*\d\.\d\.\d/m.match r.changelog
+    entry += changelog_section[1] unless changelog_section.nil?
+
+    file.write(entry + "\n\n")
+  end
+end
+
+@recent = recent
+ARGV.clear
+IRB.start
+
