@@ -27,6 +27,10 @@ File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
     entry += "#{r.metadata[:summary]}\n\n"
 
     changelog_section = /(##[^\n]*#{r.version}.*?)##[^\n]*\d\.\d\.\d/m.match r.changelog
+    if changelog_section.nil?
+      changelog_section = /(##.*#{r.version}.*?)##.*\d\.\d\.\d/m.match r.changelog
+    end
+
     entry += changelog_section[1] unless changelog_section.nil?
 
     file.write(entry + "\n\n")
