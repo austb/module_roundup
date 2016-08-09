@@ -44,3 +44,7 @@ where [options] are all optional:
   -e, --enddate=<s>    An end date (don't count modules published after this date.) (default: 2016-08-09T15:53:23-07:00)
   -h, --help           Show this message
 ```
+
+## Markdown
+
+If you'd like to render the markdown locally, check out [grip](https://github.com/joeyespo/grip).
