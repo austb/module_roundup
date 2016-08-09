@@ -8,7 +8,7 @@ Collect information about modules in a given date range.
 
 The earliest release publication datetime to include (Example: `2016-07-01`).
 
-####`-o, --output` (optional, default: the value give as `start_date`)
+####`-o, --output` (optional, default: the value given as `start_date`)
 
 The name of the ouput file. The file will be created in `reports/`.
 The default file name is the same string given as the `start_date`
@@ -21,7 +21,7 @@ The latest release publication datetime to include (Example: `2016-08-01`).
 
 ### Example
 
-This will collect information for all releases for july and write the information
+This will collect information for all releases for July 2016 and write the information
 to `reports/july.md`.
 
 ```bash
