@@ -59,8 +59,8 @@ end
 
 File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
   recent.each do |r|
-    entry = "##**#{r.slug}**\n\n"
-    entry += "####{r.metadata[:summary]}\n\n"
+    entry = "###**#{r.slug}**\n\n"
+    entry += "#####{r.metadata[:summary]}\n\n"
 
     changelog_section = /(##[^\n]*#{r.version}.*?)(?:##[^\n]*\d\.\d\.\d|\Z)/m.match r.changelog
     if changelog_section.nil?
@@ -72,7 +72,7 @@ File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
     file.write(entry + "\n\n")
   end
 
-    file.write("## **[Vox Pupuli](https://voxpupuli.org/) releases**\n\n")
+    file.write("### **[Vox Pupuli](https://voxpupuli.org/) releases**\n\n")
 
   vox_recent.each do |v|
   #author
@@ -81,7 +81,7 @@ File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
     author =v.metadata[:author]
     version = v.metadata[:version]
     module_name = v.module.name
-    entry = "* [#{author}/#{module_name}](https://forge.puppet.com/puppet/#{module_name}) #{version}"
+    entry = "+ [#{author}/#{module_name}](https://forge.puppet.com/puppet/#{module_name}) #{version}"
 
     file.write(entry + "\n")
   end
