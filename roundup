@@ -2,6 +2,9 @@
 require 'puppet_forge'
 require 'trollop'
 
+#vars for use later
+forge_root = "https://forge.puppet.com/puppetlabs/"
+
 opts = Trollop::options do
   banner <<-EOS
 Collect information about all modules released in a given date range.
@@ -36,9 +39,12 @@ end
 
 PuppetForge.user_agent = "ModuleRoundup"
 
+#TODO refactor
 @puppetlabs_releases = PuppetForge::Release.where(owner: 'puppetlabs', sort_by: 'release_date', limit: 100)
+@vox_releases = PuppetForge::Release.where(owner: 'puppet', sort_by: 'release_date', limit: 100)
 
 recent = []
+vox_recent = []
 
 @puppetlabs_releases.unpaginated.each do |item|
   release_date = DateTime.parse item.created_at
@@ -47,19 +53,47 @@ recent = []
   recent << item unless release_date > end_date
 end
 
+@vox_releases.unpaginated.each do |item|
+  release_date = DateTime.parse item.created_at
+  break if release_date < start_date
+
+  vox_recent << item unless release_date > end_date
+end
+
 File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
   recent.each do |r|
-    entry = "#**#{r.slug}**\n\n"
-    entry += "#{r.metadata[:summary]}\n\n"
+
+    updated = Date.parse r.updated_at
+    entry = "### [#{r.slug}](#{forge_root}#{r.module.name})\n"
+    entry += "#### #{r.metadata[:summary]}\n"
+    entry += "#{updated}\n\n"
+
+    #entry = "###**#{r.slug}**\n\n"
+    ##entry += r.module.name + "\n\n"
+    #entry += "#####{r.metadata[:summary]}\n\n"
 
     changelog_section = /(##[^\n]*#{r.version}.*?)(?:##[^\n]*\d\.\d\.\d|\Z)/m.match r.changelog
     if changelog_section.nil?
       changelog_section = /(##.*#{r.version}.*?)(?:##.*\d\.\d\.\d|\Z)/m.match r.changelog
     end
 
-    entry += changelog_section[1] unless changelog_section.nil?
+   #entry += changelog_section[1] unless changelog_section.nil?
 
-    file.write(entry + "\n\n")
+    file.write(entry)# + "\n\n")
+  end
+
+    file.write("### **[Vox Pupuli](https://voxpupuli.org/) releases**\n\n")
+
+  vox_recent.each do |v|
+  #author
+  #version
+  #module name
+    author =v.metadata[:author]
+    version = v.metadata[:version]
+    module_name = v.module.name
+    entry = "+ [#{author}/#{module_name}](https://forge.puppet.com/puppet/#{module_name}) #{version}"
+
+    file.write(entry + "\n")
   end
 end
 
