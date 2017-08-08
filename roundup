@@ -2,6 +2,9 @@
 require 'puppet_forge'
 require 'trollop'
 
+#vars for use later
+forge_root = "https://forge.puppet.com/puppetlabs/"
+
 opts = Trollop::options do
   banner <<-EOS
 Collect information about all modules released in a given date range.
@@ -59,17 +62,24 @@ end
 
 File.open("#{File.dirname(__FILE__)}/reports/#{output_file}", 'w') do |file|
   recent.each do |r|
-    entry = "###**#{r.slug}**\n\n"
-    entry += "#####{r.metadata[:summary]}\n\n"
+
+    updated = Date.parse r.updated_at
+    entry = "### [#{r.slug}](#{forge_root}#{r.module.name})\n"
+    entry += "#### #{r.metadata[:summary]}\n"
+    entry += "#{updated}\n\n"
+
+    #entry = "###**#{r.slug}**\n\n"
+    ##entry += r.module.name + "\n\n"
+    #entry += "#####{r.metadata[:summary]}\n\n"
 
     changelog_section = /(##[^\n]*#{r.version}.*?)(?:##[^\n]*\d\.\d\.\d|\Z)/m.match r.changelog
     if changelog_section.nil?
       changelog_section = /(##.*#{r.version}.*?)(?:##.*\d\.\d\.\d|\Z)/m.match r.changelog
     end
 
-    entry += changelog_section[1] unless changelog_section.nil?
+   #entry += changelog_section[1] unless changelog_section.nil?
 
-    file.write(entry + "\n\n")
+    file.write(entry)# + "\n\n")
   end
 
     file.write("### **[Vox Pupuli](https://voxpupuli.org/) releases**\n\n")
